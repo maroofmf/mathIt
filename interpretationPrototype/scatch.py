@@ -1,12 +1,19 @@
 
-keys = [1,2,3,4]
 
-def function(keys):
-    for value in keys:
-        print(value)
-        if value ==3:
+class printing:
+    def __init__(self,inp):
+        self.array = inp
+    def p(self):
+        print(self.array)
 
-def changer():
-    return([2,3])
+obj = printing([1,2,3])
+obj.p()
 
-function(keys)
+obj = printing([4,6,7])
+obj.p()
+
+
+
+
+
+

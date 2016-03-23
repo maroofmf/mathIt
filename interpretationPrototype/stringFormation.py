@@ -2,22 +2,29 @@ import inputData
 import customFunctions as cf
 import preProcess
 import stringGenRules
+import breakAnalyser
 
 class evaluationPhase:
     def __init__(self):
         self.dataObject = preProcess.inputDataProperties()
-        self.data = self.dataObject.processedData
+        self.data = self.dataObject.processedData  #Sould be called only once! #TODO: Generalize processedData such that it can be called n times
         self.keyList = self.dataObject.sortedKeyList()
         self.famousD2 = {}
+        self.processID = {}
+        self.index = 0
+        self.skipList = []
 
     def d2Formation(self):
         index = 0
         keyRange = []
         dupKeyList = self.keyList
         for keys in dupKeyList:
+            if keys in self.skipList:
+                continue
             if self.data[keys][8] == 'break':
-                self.breakTest(keys)
-                self.famousD2[str(index)] = self.abstractDataType(keyRange)
+                newObject = breakAnalyser.breakFactory(keys,self.data,self.skipList)
+
+                # self.famousD2[str(index)] = self.abstractDataType(keyRange)
                 keyRange = []
                 index += 1
             elif int(keys) == len(self.data)-1:
@@ -26,14 +33,6 @@ class evaluationPhase:
                 keyRange = []
             else:
                 keyRange.append(keys)
-
-    def breakTest(self,keys):
-        if self.data[keys][5] == 'root':
-            try:
-                faithfullIndex = str(int(keys)-1)
-                tempDict[keys] = self.data[keys]
-                tempDict[faithfullIndex] = self.data[faithfullIndex]
-
 
 
 
@@ -89,7 +88,8 @@ class evaluationPhase:
                 finalExpression = finalExpression + tempDict[keys][4]
         return(finalExpression)
 
-
+    def testPrint(self):
+        print('This Works')
 
 
 
