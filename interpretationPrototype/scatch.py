@@ -1,19 +1,7 @@
+a = [1,2,3,4,5,6]
 
-
-class printing:
-    def __init__(self,inp):
-        self.array = inp
-    def p(self):
-        print(self.array)
-
-obj = printing([1,2,3])
-obj.p()
-
-obj = printing([4,6,7])
-obj.p()
-
-
-
-
-
+for values in a:
+    print(values)
+    if values == 4:
+        a.pop(4)
 

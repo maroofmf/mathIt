@@ -48,6 +48,13 @@ def sortedKeyArray(dict):
         sortedKeyArray = sorted(list(keyArray))
         return(sortedKeyArray)
 
+def searchDictionary(lowerX,upperX,data):
+    listIndices = []
+    for keys in data:
+        if data[keys][0] > lowerX and data[keys][0] < upperX:
+            listIndices.append(keys)
+    return (listIndices)
+
 #TODO: Imporve Lexer Rules
 def lexer(type,dataDict,indexArray):
     # type 1 : number^number

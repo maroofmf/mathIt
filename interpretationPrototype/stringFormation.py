@@ -1,10 +1,37 @@
+'''
+PHASE # 3
+'''
+
 import inputData
 import customFunctions as cf
 import preProcess
 import stringGenRules
 import breakAnalyser
 
-class evaluationPhase:
+'''
+This class breaks the preprocessed data into small chunks of key values that will be used to format strings.
+
+-------------------------------------------------------------------------------------------------------------------------
+Data Present:
+self.dataObject --> Data object created from the class inputDataProperties
+self.data --> Input Data
+self.keyList --> Sorted Key List of base dictionary
+self.famousD2 --> [key: abstract_dictionary]
+
+-------------------------------------------------------------------------------------------------------------------------
+Methods:
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Inputs:
+
+-------------------------------------------------------------------------------------------------------------------------
+Outputs:
+
+'''
+
+
+class stringFormation:
     def __init__(self):
         self.dataObject = preProcess.inputDataProperties()
         self.data = self.dataObject.processedData  #Sould be called only once! #TODO: Generalize processedData such that it can be called n times
@@ -22,8 +49,7 @@ class evaluationPhase:
             if keys in self.skipList:
                 continue
             if self.data[keys][8] == 'break':
-                newObject = breakAnalyser.breakFactory(keys,self.data,self.skipList)
-
+                newObject = breakAnalyser.breakAnalyser(keys,keyRange,self.data,self.skipList)
                 # self.famousD2[str(index)] = self.abstractDataType(keyRange)
                 keyRange = []
                 index += 1
@@ -33,8 +59,6 @@ class evaluationPhase:
                 keyRange = []
             else:
                 keyRange.append(keys)
-
-
 
     def abstractDataType(self,keyRange):
         abstractDict = {}
@@ -87,9 +111,6 @@ class evaluationPhase:
             if tempDict[keys][5] == 'o':
                 finalExpression = finalExpression + tempDict[keys][4]
         return(finalExpression)
-
-    def testPrint(self):
-        print('This Works')
 
 
 
