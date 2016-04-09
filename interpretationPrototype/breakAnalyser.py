@@ -44,32 +44,75 @@ class breakAnalyser():
         self.keyRange = keyRange
 
     def pathRouting(self):
-        if self.data[self.key][5] == 'n':
-            return(self.stringGenerator(self.keyRange))
+        finalExpression  = ''
+        if self.data[self.key][5] == 'N':
+            self.keyRange.append(self.key)
+            finalExpression = (self.stringGenerator(self.keyRange))
 
-        elif self.data[self.key][5] == 'root':
+        elif self.data[self.key][5] == 'Root':
+            keyRangeString = ''
             previousKey = max(self.keyRange)
             rootValue = 2
 
-            if self.data[previousKey][5] == 'n':
+            if self.data[previousKey][5] == 'N':
                 rootKeyValue = previousKey
-                rootValue = int(self.data[rootKeyValue][4])
+                rootValue = float(self.data[rootKeyValue][4])
                 self.keyRange.pop(self.keyRange.index(str(rootKeyValue)))
             try:
                 keyRangeString = self.stringGenerator(self.keyRange)
             except:
-                keyRangeString = ''
                 settings.logger.debug('Empty keyRange due to small value')
             x0 = self.data[self.key][0]
             x1 = self.data[self.key][1]
             underRootElements = cf.searchDictionary(x0,x1,self.data)
+            underRootElements = cf.sortStringList(underRootElements)
             underRoot = eval(self.stringGenerator(underRootElements))
             finalExpression = keyRangeString + str(pow(underRoot,1/rootValue))
+            for rootElements in underRootElements:
+                self.skipList.append(rootElements)
 
-        # elif self.data[self.key][5] == 'root':
+        elif self.data[self.key][5] == 'longDivision':
+            keyRangeString = ''
+            try:
+                keyRangeString = self.stringGenerator(self.keyRange)
+                [self.skipList.append(i) for i in self.keyRange]
+            except:
+                settings.logger.debug('Empty keyRange due to small value')
 
+            topElements, bottomElements = cf.longDivisionFind(self.key,self.data)
+            topString = self.stringGenerator(topElements)
+            bottomString = self.stringGenerator(bottomElements)
+            finalExpression = keyRangeString +'('+ topString + ')'+'/'+'('+bottomString+')'
+            [self.skipList.append(i) for i in bottomElements]
+            [self.skipList.append(i) for i in topElements]
 
-
+        elif self.data[self.key][5] == 'Bracket':
+            keyRangeString=''
+            self.skipList.append(self.key)
+            if self.data[self.key][4] in ['(','{','[']:
+                try:
+                    keyRangeString = self.stringGenerator(self.keyRange)
+                    [self.skipList.append(i) for i in self.keyRange]
+                except:
+                    settings.logger.debug('Empty keyRange due to small value')
+                finalExpression = keyRangeString
+            else:
+                try:
+                    nextKey = str(int(self.key)+1)
+                    #TODO: nextKey should be choosen carefully in cases when we have complex
+                    if self.data[nextKey][5] == 'N':
+                        finalExpression = str(pow(eval(self.stringGenerator(self.keyRange)), int(self.data[nextKey][4])))
+                        self.skipList.append(nextKey)
+                        [self.skipList.append(i) for i in self.keyRange]
+                    else:
+                        finalExpression = self.stringGenerator(self.keyRange)
+                        [self.skipList.append(i) for i in self.keyRange]
+                except:
+                    settings.logger.debug('Running Exception becuase last element is a bracket')
+                    # finalExpression = self.stringGenerator(self.keyRange)
+                    [self.skipList.append(i) for i in self.keyRange]
+        print(finalExpression)
+        return(finalExpression)
 
     def classificationEngine(self,tempDict):
 
@@ -92,16 +135,18 @@ class breakAnalyser():
 
     def stringGenerator(self,keyRange):
         tempDict = {}
+
         for keys in keyRange:
             tempDict[keys] = self.data[keys]
 
         tempDict = self.classificationEngine(tempDict)
+        print('TempDict:',tempDict)
         finalExpression = ''
-        sortedKeys = cf.sortedKeyArray(tempDict)
+        sortedKeys = cf.sortStringList(tempDict)
         for keys in sortedKeys:
-            if tempDict[keys][5] == 'n':
+            if tempDict[keys][5] == 'N':
                 try:
-                    testIndex = int(keys) +1
+                    testIndex = sortedKeys[sortedKeys.index(keys)+1]
                     if tempDict[str(testIndex)][12] == 'superscript':
                         finalExpression = finalExpression + cf.lexer(1,tempDict,[keys,str(testIndex)])
                         sortedKeys.pop(sortedKeys.index(str(testIndex)))
@@ -111,15 +156,16 @@ class breakAnalyser():
                     settings.logger.debug('Exception occured while testing for keyindex +1')
                     finalExpression = finalExpression + tempDict[keys][4]
 
-            if tempDict[keys][5] == 'o':
+            if tempDict[keys][5] == 'O':
                 finalExpression = finalExpression + tempDict[keys][4]
         return(finalExpression)
 
 
-
-obj = pp.inputDataProperties()
-dictA = obj.processedDictionary()
-[dictA.pop(i) for i in ['1','2','5','6','7','8','9']]
-
-testCase = breakAnalyser('3',['0'],dictA,[])
-testCase.pathRouting()
+# daa = inputData.data()
+# baa ={}
+# for i in ['0','1','2','3','4','5']:
+#     baa[i] = daa[i]
+#
+# obj = breakAnalyser('4',['1','2','3'],baa,[])
+# a=obj.pathRouting()
+# print(a)

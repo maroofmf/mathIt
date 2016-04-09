@@ -36,14 +36,18 @@ class inputDataProperties():
         self.rawData = inputData.data()
         self.processedData = {}
         self.sortedKeys = []
-        self.listOfBreakables = ['root','bracket','longDivision']
+        self.processedData1 = {}
+        self.listOfBreakables = ['Root','Bracket','longDivision']
         self.run = 0
+        self.dictLength = len(self.rawData.keys())
+        self.lastElementKey = ''
 
 #TODO: Develop immunity against noise due to rotation by rawData PreProcess
 
     def processedDictionary(self):
         if self.run == 0:
             sortedKeys = cf.findMin(self.rawData,0)
+            self.lastElementKey = sortedKeys[-1][0]
             index = 0
             for (key,garbageValue) in sortedKeys:
                 self.processedData[str(index)] = self.rawData[key]
@@ -52,20 +56,27 @@ class inputDataProperties():
                 self.processedData[str(index)].append(self.breakable(key))
                 index += 1
             self.run = 1
+
         return(self.processedData)
 
     def breakable(self,key):
-        if self.rawData[key][5] in self.listOfBreakables:
+        if self.rawData[key][5] in self.listOfBreakables or self.lastElementKey == key:
             return('break')
         else:
             return('no_break')
 
 
     def sortedKeyList(self):
+        bufferList = []
         self.processedDictionary()
         for keys in self.processedData:
             self.sortedKeys.append(keys)
-        return(sorted(self.sortedKeys))
+
+        [bufferList.append(int(i)) for i in self.sortedKeys]
+        bufferList = sorted(bufferList)
+        self.sortedKeys = []
+        [self.sortedKeys.append(str(i)) for i in bufferList]
+        return(self.sortedKeys)
 
     def xCentOfRawData(self,key):
         return((self.rawData[key][0]+self.rawData[key][1])/2)
@@ -74,7 +85,9 @@ class inputDataProperties():
         return((self.rawData[key][2]+self.rawData[key][3])/2)
 
 
-
 # obj = inputDataProperties()
 # a=obj.processedDictionary()
-# print(a[''])
+# print(a['19'])
+
+
+
