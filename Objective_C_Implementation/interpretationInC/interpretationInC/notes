@@ -1,0 +1,4 @@
+Objective C Notes:
+
+(1) const char * argv[] >> is an array of pointers that contain the string values in the memory location.
+(2) 

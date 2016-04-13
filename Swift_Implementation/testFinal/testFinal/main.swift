@@ -19,4 +19,3 @@ var meraDict:[String:[Any]] = ["8": [285, 300, 85, 100, "2", "N"], "9": [305, 31
 var meraObj = interpretation(rawData: meraDict)
 var c = meraObj.evaluate()
 print(c)
-

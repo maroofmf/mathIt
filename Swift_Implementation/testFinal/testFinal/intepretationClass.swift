@@ -123,6 +123,7 @@ public class interpretation: interpretationFunctions {
                 }
                 index += 1
             }
+//            data = dataCleanup(data)
         }
         processedDataRunKey = 0
         return data
@@ -149,7 +150,7 @@ public class interpretation: interpretationFunctions {
                 keyRange.append(keys)
             }
         }
-        print(subProcessOutput)
+
         finalOutput = evaluateString(subProcessOutput)
         return finalOutput
         
@@ -238,6 +239,7 @@ public class interpretation: interpretationFunctions {
         default:
             processOutput = ""
         }
+        print(processOutput)
         return processOutput
     }
     
@@ -282,7 +284,6 @@ public class interpretation: interpretationFunctions {
         
         tempDict = classificationEngine(tempDict)
         for keys in keyRange{
-            print("for keys:" , keyRange[currentIndex])
             if skipList2.contains(keys){
                 currentIndex += 1
                 continue
@@ -306,12 +307,17 @@ public class interpretation: interpretationFunctions {
             else {
                 expression += tempDict[keys]![4] as! String
             }
-            print(expression)
             currentIndex += 1
         }
     
         return expression
     }
+    
+//    //# Uses Decision Tree to remove noise. Outputs clean Dictionary.
+//    public func dataCleanup(data:[String:[Any]]) -> [String:[Any]] {
+//        
+//    }
+    
 
 }
 

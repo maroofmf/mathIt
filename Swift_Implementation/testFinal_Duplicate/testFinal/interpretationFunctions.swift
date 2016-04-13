@@ -65,13 +65,13 @@ public class interpretationFunctions {
     }
     
     //# MARK: Sorting Based on index Values in Ascending Order
-    public func dictionarySortAscending(dataDictionary: [String:[Any]], index: Int) -> [String]{
+    public func dictionarySortAscending(dataDictionary: NSMutableDictionary, index: Int) -> [String]{
         var dictionaryArray: [(String,Any)] = []
         var returnArray: [String]=[]
         var bufferArray: [(String,Any)] = []
         
         for (keys,values) in dataDictionary{
-            dictionaryArray.append((keys,values[index]))
+            dictionaryArray.append((keys as! String,values[index]))
         }
         
         bufferArray = dictionaryArray.sort{(element1, element2) -> Bool in
@@ -97,12 +97,13 @@ public class interpretationFunctions {
     }
     
     
-    //# MARK: Convert ANY to DOUBLE
+    //# MARK: Convert ANY(>> only int please) to DOUBLE
     public func anyToDouble(value: Any) -> Double{
         
         let int_value = value as? Int
         let str_value = value as? String
         var double_value:Double = 0
+        
         if let _ = int_value{
             double_value = Double(int_value!)
         }
@@ -112,12 +113,13 @@ public class interpretationFunctions {
         else{
             double_value = (value as! Double)
         }
+        
         return double_value
     }
     
     //# MARK: Return sorted keys of a dictionary
-    public func sortedKeys(dataDictionary: [String:[Any]]) -> [String]{
-        let allKeys: [String] = Array(dataDictionary.keys)
+    public func sortedKeys(dataDictionary: NSMutableDictionary) -> [String]{
+        let allKeys: [String] = dataDictionary.allKeys as! [String]
         let sortedKeys = allKeys.sort({ (s1: String, s2: String) -> Bool in
             let s1 = Int(s1)
             let s2 = Int(s2)
@@ -128,7 +130,7 @@ public class interpretationFunctions {
     }
     
     //# MARK: Pass a dictionary and the key value to find the minimum value of dictionary-value
-    public func minFinder(funcDict: [String:[Any]], arrayIndex: Int) -> Int {
+    public func minFinder(funcDict: NSMutableDictionary, arrayIndex: Int) -> Int {
         var minElement = funcDict.minElement{(element1,element2) -> Bool in
             let value1 = element1.1[arrayIndex]
             let value2 = element2.1[arrayIndex]
@@ -140,7 +142,7 @@ public class interpretationFunctions {
     }
     
     //# MARK: Pass a dictionary and the key value to find the maximum value of dictionary-value
-    public func maxFinder(funcDict: [String:[Any]], arrayIndex: Int) -> Int {
+    public func maxFinder(funcDict: NSMutableDictionary, arrayIndex: Int) -> Int {
         var maxElement = funcDict.maxElement{(element1,element2) -> Bool in
             let value1 = element1.1[arrayIndex]
             let value2 = element2.1[arrayIndex]
@@ -168,12 +170,12 @@ public class interpretationFunctions {
     }
     
     //# MARK: Find the elements lying under the root symbol and return the keys in sorted order
-    public func underRootSearch(funcDict: [String:[Any]], rootKey: String) -> [String]{
+    public func underRootSearch(funcDict: NSMutableDictionary, rootKey: String) -> [String]{
         let x0_threshold:Double = anyToDouble(funcDict[rootKey]![0])
         let x1_threshold:Double = anyToDouble(funcDict[rootKey]![1])
         let y0_threshold:Double = anyToDouble(funcDict[rootKey]![2])
         let y1_threshold:Double = anyToDouble(funcDict[rootKey]![3])
-        let dictKeys = Array(funcDict.keys)
+        let dictKeys = funcDict.allKeys as! [String]
         var returnKeys: [String] = []
         
         for keys in dictKeys{
@@ -215,8 +217,8 @@ public class interpretationFunctions {
     }
     
     //# MARK: Find Next element in dictionary
-    public func nextElement(funcDict: [String:[Any]], currentKeyValue: String) -> String {
-        let keyValue:[String] = sortArray(Array(funcDict.keys))
+    public func nextElement(funcDict: NSMutableDictionary, currentKeyValue: String) -> String {
+        let keyValue:[String] = sortArray(funcDict.allKeys as! [String])
         let currentIndex: Int = keyValue.indexOf(currentKeyValue)!
         let nextIndex: Int = currentIndex + 1
         
