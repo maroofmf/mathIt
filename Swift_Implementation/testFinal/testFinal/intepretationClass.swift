@@ -123,9 +123,9 @@ public class interpretation: interpretationFunctions {
                 }
                 index += 1
             }
-//            data = dataCleanup(data)
         }
         processedDataRunKey = 0
+        print("data:",data)
         return data
     }
     
@@ -239,7 +239,6 @@ public class interpretation: interpretationFunctions {
         default:
             processOutput = ""
         }
-        print(processOutput)
         return processOutput
     }
     

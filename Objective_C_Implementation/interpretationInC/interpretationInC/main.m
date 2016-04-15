@@ -6,14 +6,27 @@
 //  Copyright © 2016 Maroof Mohammed Farooq. All rights reserved.
 //
 
+//#import <Foundation/Foundation.h>
+//
+//int main(int argc, const char * argv[]) {
+//    @autoreleasepool {
+//        UInt a = sizeof(int);
+//        NSLog(@"%d",a);
+//    }
+//    return 0;
+//}
+//
+//
+
+
+// main.m
 #import <Foundation/Foundation.h>
+#import "interpretationFunctions.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"%d",argc);
+
+        
     }
     return 0;
 }
-
-main

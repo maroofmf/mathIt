@@ -56,7 +56,7 @@ class inputDataProperties():
                 self.processedData[str(index)].append(self.breakable(key))
                 index += 1
             self.run = 1
-
+        print('this:',self.processedData)
         return(self.processedData)
 
     def breakable(self,key):

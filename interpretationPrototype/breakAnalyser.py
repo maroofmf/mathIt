@@ -111,7 +111,6 @@ class breakAnalyser():
                     settings.logger.debug('Running Exception becuase last element is a bracket')
                     # finalExpression = self.stringGenerator(self.keyRange)
                     [self.skipList.append(i) for i in self.keyRange]
-        print(finalExpression)
         return(finalExpression)
 
     def classificationEngine(self,tempDict):
@@ -140,7 +139,6 @@ class breakAnalyser():
             tempDict[keys] = self.data[keys]
 
         tempDict = self.classificationEngine(tempDict)
-        print('TempDict:',tempDict)
         finalExpression = ''
         sortedKeys = cf.sortStringList(tempDict)
         for keys in sortedKeys:

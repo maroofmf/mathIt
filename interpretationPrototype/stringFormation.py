@@ -55,6 +55,7 @@ class stringFormation:
                 # self.famousD2[str(index)] = self.abstractDataType(keyRange)
                 keyRange = []
                 index += 1
+
             else:
                 keyRange.append(keys)
         print(eval(evaluatedString))

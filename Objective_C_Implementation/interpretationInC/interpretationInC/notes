@@ -1,4 +1,122 @@
 Objective C Notes:
 
 (1) const char * argv[] >> is an array of pointers that contain the string values in the memory location.
-(2) 
+-----------------------------------------------------------------------------------------------------------
+(2) Data Types:
+
+Int, UInt - %d - 4 bytes
+Float     - %f - 4 bytes
+Double    - %e - 8 bytes
+Pointer   -    - 8 bytes
+String    - %s
+Long Long Int - %lld
+Unsigned Long  - %lu
+Boolean   - %b - 1 byte
+
+-----------------------------------------------------------------------------------------------------------
+(3) Structure in Objective C is like a container for data.
+
+To create:
+
+typedef Structure{
+int age;
+int value;
+char *name;
+} Student
+
+To Use:
+
+Student maroof;
+maroof.age = 2;
+maroof.value = 100;
+maroof.name = "Maroof";
+
+Send it to a function:
+
+void functionName(student anyName){
+printf(anyName.age)
+}
+-----------------------------------------------------------------------------------------------------------
+(4) We use pointers for strings because it helps to dynamically utilize memory. Instead of allocating 100 bytes of memory for a 10 byte long string, we save memory.
+-----------------------------------------------------------------------------------------------------------
+(5) Enums: Analogous to switch case. It groups all the cases and functions together.
+----------------------------------------------------------------------------------------------------------
+(6) Use typedef to define a new data type
+-----------------------------------------------------------------------------------------------------------
+(7) Pointer data type >> int* or float* depends on the variable data type.
+It is 8 bytes long (64 bits)
+-----------------------------------------------------------------------------------------------------------
+(8) int x = 45;
+int *y = &x;
+NSLog(@"The value was %d", *y);
+
+It prints out The value was 45. It sends the value of the pointed memory space. This is called dereferncing the pointer. It obtains the values stored in the memory location in y.
+-----------------------------------------------------------------------------------------------------------
+(9) Array's are pointers in disguise. Eg:
+int ages[50];
+int* p = ages;
+NSLog(@"Age of 10th person is %d", p[9]);
+
+p[9] is equalent of saying add 9 to the current pointer of p and dereference it. It is equalent to *(p+9)
+-----------------------------------------------------------------------------------------------------------
+(10) When we use scanf(%d,&n) >>.. we use &n to send the value to a particular location in the memory.
+-----------------------------------------------------------------------------------------------------------
+(11) Use Static function to access a function in the file it was declaration and implemented.
+
+Eg: static int functionName(arguments);
+-----------------------------------------------------------------------------------------------------------
+(12) Static variables inside a function never resets. Eg.
+
+int countByTwo() {
+static int currentCount = 0;
+currentCount += 2;
+return currentCount;
+}
+
+Everytime you call the function it returns a value incremented by two from the previous output of the same function.
+-----------------------------------------------------------------------------------------------------------
+(13) Static function in a header file is used only for private use. Acessing from outside the file is not allowed.
+-----------------------------------------------------------------------------------------------------------
+(14)  Use typedef to define a datatype. Eg:
+typedef unsigned char ColorComponent;
+-----------------------------------------------------------------------------------------------------------
+(15) Pointers have two operators:
+(i) Reference operators: We use & to get the memory location of the stored variable. Returns the
+(ii) Dereference operators: We use * to dereference a memory location. It gets me the value of the stored variable by the pointer.
+-----------------------------------------------------------------------------------------------------------
+(16) Using pointers to acess value of an array:
+
+#import <Foundation/Foundation.h>
+
+int main(int argc, const char * argv[]) {
+@autoreleasepool {
+char model[5] = {'H', 'o', 'n', 'd', 'a'};
+char *modelPointer = &model[0];
+for (int i=0; i<5; i++) {
+NSLog(@"Value at memory address %p is %c",
+modelPointer, *modelPointer);
+modelPointer++;
+}
+NSLog(@"The first letter is %c", *(modelPointer - 5));
+}
+return 0;
+}
+-----------------------------------------------------------------------------------------------------------
+(17) To clear a pointer, use *y = NULL
+-----------------------------------------------------------------------------------------------------------
+(18)  Use void *pointerName = &variable so that you dont have to worry abou the type of data in the variable carried by the pointer.
+-----------------------------------------------------------------------------------------------------------
+(19) All objects in Objective - C are stored as pointer. Eg:
+
+NSString *varName = @"This is a 4 pointer! TheeHee "
+-----------------------------------------------------------------------------------------------------------
+(20) There are two ways of comparing number.:
+i) Comparing by pointer
+ii) Comparing by value (more roboust)
+-----------------------------------------------------------------------------------------------------------
+(21) 
+
+
+
+
+
