@@ -305,9 +305,9 @@ NSMutableArray *underRootSearch(NSMutableDictionary *dataDictionary, NSString *r
     
     for (id key in dataDictionary){
         NSMutableArray *dataValue = [dataDictionary objectForKey:key];
-        NSNumber *xCentVal = [dataValue objectAtIndex:5];
-        NSNumber *yCentVal = [dataValue objectAtIndex:6];
-        if ((xCentVal > x0_threshold) && (xCentVal < x1_threshold) && (yCentVal > y0_threshold) && (yCentVal < y1_threshold)) {
+        NSNumber *xCentVal = [dataValue objectAtIndex:6];
+        NSNumber *yCentVal = [dataValue objectAtIndex:7];
+        if (([xCentVal isGreaterThan: x0_threshold]) && ([xCentVal isLessThan: x1_threshold]) && ([yCentVal isGreaterThan: y0_threshold]) && ([yCentVal isLessThan: y1_threshold])) {
             if (key != rootKey){
                 [returnArray addObject:key];
             }
@@ -350,12 +350,12 @@ NSMutableArray *longDivision(NSMutableDictionary *dataDictionary, NSString *divi
     
     for (id key in dataDictionary) {
         NSMutableArray *dataValue = [dataDictionary objectForKey:key];
-        NSNumber *xCentVal = [dataValue objectAtIndex:5];
-        NSNumber *yCentVal = [dataValue objectAtIndex:6];
-        if ((xCentVal > x0_threshold) && (xCentVal < x1_threshold)){
-            if ((yCentVal < y0_threshold) && (key != divisionKey)){
+        NSNumber *xCentVal = [dataValue objectAtIndex:6];
+        NSNumber *yCentVal = [dataValue objectAtIndex:7];
+        if (([xCentVal isGreaterThan: x0_threshold]) && ([xCentVal isLessThan: x1_threshold])){
+            if (([yCentVal isLessThan: y0_threshold]) && ([key isNotEqualTo: divisionKey])){
                 [topArray addObject:key];
-            } else if ((yCentVal > y1_threshold) && (key != divisionKey)) {
+            } else if (([yCentVal isGreaterThan: y1_threshold]) && ([key isNotEqualTo: divisionKey])) {
                 [bottomArray addObject:key];
             }
         }

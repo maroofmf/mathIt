@@ -125,7 +125,6 @@ public class interpretation: interpretationFunctions {
             }
         }
         processedDataRunKey = 0
-        print("data:",data)
         return data
     }
     
@@ -151,6 +150,7 @@ public class interpretation: interpretationFunctions {
             }
         }
 
+        print(subProcessOutput)
         finalOutput = evaluateString(subProcessOutput)
         return finalOutput
         

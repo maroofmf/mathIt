@@ -114,7 +114,44 @@ NSString *varName = @"This is a 4 pointer! TheeHee "
 i) Comparing by pointer
 ii) Comparing by value (more roboust)
 -----------------------------------------------------------------------------------------------------------
-(21) 
+(21) Way to build a class:
+
+- Create a new cocoa class. The name of the class must match the class name.
+- Develop the interface by using @interface followed by class and superclass name sepreated by a colon. Inside the curly braces, we can define protected variables.  The protected variables can be defined in the implementation code too which is much preffered.
+- In the interface, @property declares a public property.
+-----------------------------------------------------------------------------------------------------------
+(22) Review about Classes and Objects:
+
+1- Objects are instances of classes. They are said to be instance of a particular class.
+2- Procedures are known as methods.
+3- Variables are also known as properties, field, attributes or members.
+4- Class variable belongs to the class as a whole. (one copy per class)
+5- Instance variables or attributes belong to indivisual objects. (one copy per object of the class).
+6- Member variables refers to both the class and instance variables.
+7- Class methods have access only to class variables and the procedures from the input call.
+8- Instance methods belong to indivisual objects
+9- Class Methods can only be accessed by calling the class name and not the object name.
+-----------------------------------------------------------------------------------------------------------
+(23) Use Getter and Setter:
+
+-If we declare a @property, that means an instance variable, it is necessary to declare getter and setter functions too. Fortunately in Objective -C for XCODE 4.4+, it is done automatically. Getter is an accessor that return the value of the instance variable. Setter is an accessor that sets the value of the property/attribute.
+-The naming convention used by objective C for getter and setter methods are:
+Eg: @property BOOL running;
+
+getter_name = running
+setter_name = setRunning
+attribute_name = _running
+-----------------------------------------------------------------------------------------------------------
+(24)
+
+
+
+
+
+
+
+
+
 
 
 
