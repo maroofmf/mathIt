@@ -307,7 +307,7 @@ NSMutableArray *underRootSearch(NSMutableDictionary *dataDictionary, NSString *r
         NSMutableArray *dataValue = [dataDictionary objectForKey:key];
         NSNumber *xCentVal = [dataValue objectAtIndex:6];
         NSNumber *yCentVal = [dataValue objectAtIndex:7];
-        if (([xCentVal isGreaterThan: x0_threshold]) && ([xCentVal isLessThan: x1_threshold]) && ([yCentVal isGreaterThan: y0_threshold]) && ([yCentVal isLessThan: y1_threshold])) {
+        if ((xCentVal.doubleValue >= x0_threshold.doubleValue) && (xCentVal.doubleValue <= x1_threshold.doubleValue) && (yCentVal.doubleValue >= y0_threshold.doubleValue) && (yCentVal.doubleValue <= y1_threshold.doubleValue)) {
             if (key != rootKey){
                 [returnArray addObject:key];
             }
@@ -352,10 +352,10 @@ NSMutableArray *longDivision(NSMutableDictionary *dataDictionary, NSString *divi
         NSMutableArray *dataValue = [dataDictionary objectForKey:key];
         NSNumber *xCentVal = [dataValue objectAtIndex:6];
         NSNumber *yCentVal = [dataValue objectAtIndex:7];
-        if (([xCentVal isGreaterThan: x0_threshold]) && ([xCentVal isLessThan: x1_threshold])){
-            if (([yCentVal isLessThan: y0_threshold]) && ([key isNotEqualTo: divisionKey])){
+        if ((xCentVal.doubleValue > x0_threshold.doubleValue) && (xCentVal.doubleValue < x1_threshold.doubleValue)){
+            if ((yCentVal.doubleValue < y0_threshold.doubleValue) && ([key isEqualToString: divisionKey])){
                 [topArray addObject:key];
-            } else if (([yCentVal isGreaterThan: y1_threshold]) && ([key isNotEqualTo: divisionKey])) {
+            } else if ((yCentVal.doubleValue > y1_threshold.doubleValue) && ([key isEqualToString: divisionKey])) {
                 [bottomArray addObject:key];
             }
         }
