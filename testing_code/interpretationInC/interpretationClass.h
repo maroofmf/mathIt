@@ -25,8 +25,6 @@
 -(NSString*)subExpressionRouting:(NSString*)keys inputKeyRange:(NSMutableArray*)keyRange inputData:(NSMutableDictionary*)data;
 -(NSMutableDictionary*)classificationEngine:(NSMutableDictionary*)tempDict;
 -(NSString*)stringGenerator:(NSMutableArray*)keyRange inputData:(NSMutableDictionary*)data;
--(NSString*)classificationDecisionTree:(NSMutableDictionary*)tempDict current_Key:(NSString*)currentKey next_Key:(NSString*)nextKey;
--(NSNumber*)hypothesisEvaluator:(NSMutableArray*)firstElement second_Element:(NSMutableArray*)secondElement;
 
 
 @end
