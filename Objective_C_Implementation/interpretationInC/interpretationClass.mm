@@ -92,6 +92,7 @@
         }
         else if ([(data[keys][8])  isEqual: @"breakable"]) {
             subProcessOutput = [subProcessOutput stringByAppendingString: [self subExpressionRouting:keys inputKeyRange:keyRange inputData:data]];
+            NSLog(@"Subprocess: %@", subProcessOutput);
             [keyRange removeAllObjects];
         }
         else{
@@ -127,25 +128,24 @@
         {
             NSNumber *rootValue = [NSNumber numberWithDouble:2.0];
             NSMutableArray *underRootElements = [NSMutableArray arrayWithObjects: nil];
-            
             if (keyRange.count != 0){
-                NSNumber *previousKey = maxStringArray(keyRange);
-                if ([data[previousKey.stringValue][5] isEqualToString: self.symName[0]]){
-                    rootValue = [NSNumber numberWithDouble: [data[previousKey.stringValue][4] doubleValue]];
-                    [keyRange removeObject:previousKey];
-                }
+                NSString *previousKey = [NSString stringWithFormat:@"%d", (maxStringArray(keyRange)).intValue];
                 keyRangeString = [self stringGenerator:keyRange inputData:data];
+                
+                if ([data[previousKey][5] isEqualToString: self.symName[0]]){
+                    NSArray *dataArray = [self groundSneeze:data sneeze_Index:previousKey skip_List_Enable:@"no"];
+                    rootValue = dataArray[0];
+                    NSNumber *numberOfElementsToReduce = dataArray[1];
+                    NSNumber *expressionLength = [NSNumber numberWithInteger: [keyRangeString length]];
+                    keyRangeString = [keyRangeString substringToIndex: expressionLength.unsignedIntegerValue - numberOfElementsToReduce.unsignedIntegerValue];
+                }
             }
-            
             underRootElements = underRootSearch(data, keys);
             NSString *underRootString = [self stringGenerator:underRootElements inputData:data];
             NSNumber *underRootEvaluate = [NSNumber numberWithDouble:(evaluateString(underRootString)).doubleValue];
-            
             NSString *rootEvaluate = ([NSNumber numberWithDouble:pow(underRootEvaluate.doubleValue ,1/rootValue.doubleValue)]).stringValue;
-            
             [self.skipList addObjectsFromArray:underRootElements];
             processOutput = [[processOutput stringByAppendingString: keyRangeString]stringByAppendingString:rootEvaluate];
-            
             break;
         }
             // Case: LongDivision
@@ -172,7 +172,6 @@
             NSMutableArray *openBracketList = @[@"(",@"{",@"["];
             NSMutableArray  *closeBracketList =  @[@")",@"}",@"]"];
             NSString *keyElement = data[keys][4];
-            //            skipList.append(key)
             
             if ([openBracketList containsObject: keyElement]){
                 if (keyRange.count != 0){
@@ -184,15 +183,17 @@
                 
                 if ([nextElementKey isEqualToString: @"nil"]) {
                     keyRangeString = [self stringGenerator:keyRange inputData:data];
+                    keyRangeString = (evaluateString(keyRangeString)).stringValue;
+                    
                 }
                 else if ([data[nextElementKey][5] isEqualToString: self.symName[0]]){
                     NSNumber *primaryEvaluate = evaluateString([self stringGenerator:keyRange inputData:data]);
-                    NSNumber *powerTerm = [NSNumber numberWithDouble: [data[nextElementKey][4] doubleValue]];
+                    NSNumber *powerTerm = [self commonCold:data mutate_Index:nextElementKey skip_List_Enable: @"no"];
                     keyRangeString  = ([NSNumber numberWithDouble:pow(primaryEvaluate.doubleValue, powerTerm.doubleValue)]).stringValue;
-                    [self.skipList addObject: nextElementKey];
                 }
                 else{
                     keyRangeString = [self stringGenerator:keyRange inputData:data];
+                    keyRangeString = (evaluateString(keyRangeString)).stringValue;
                 }
                 
             }
@@ -233,7 +234,7 @@
         //        [keyValue addObject: [NSNumber numberWithDouble: fabs(bottomThreshold.doubleValue - [tempDict[keys][2] doubleValue])/(totalRange.doubleValue)]];
         //
         //        [tempDict setObject:keyValue forKey:keys];
-        //        //# FIXME: Get better classification
+        
         //
         //        discValue = [NSNumber numberWithDouble: -0.7 * [tempDict[keys][9] doubleValue] - 0.4* [tempDict[keys][10] doubleValue] + 0.8* [tempDict[keys][11] doubleValue] - 0.6];
         //        [keyValue addObject: discValue];
@@ -398,6 +399,7 @@
  //# MARK: String Generation
  */
 
+
 -(NSString*)stringGenerator:(NSMutableArray*)keyRange inputData:(NSMutableDictionary*)data{
     NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
     NSString *expression = @"";
@@ -412,7 +414,7 @@
     NSLog(@"For temp-> %@", tempDict);
     for (id keys in keyRange){
         
-        if ([skipList2 containsObject:keys]){
+        if ([skipList2 containsObject:keys] || ([self.skipList containsObject:keys])){
             currentIndex = [NSNumber numberWithInt: currentIndex.intValue + 1];
             continue;
         }
@@ -423,10 +425,16 @@
                 expression = [expression stringByAppendingString: tempDict[keys][4]];
             }
             else if ([tempDict[nextKey][9] isEqualToString: @"superscript"]) {
-                //# FIXME: Add support for multiple digits classified as superscript!
+                NSNumber *superScriptElement = [self commonCold:data mutate_Index:nextKey skip_List_Enable: @"yes"];
+                NSArray *dataArray = [self groundSneeze:data sneeze_Index:keys skip_List_Enable: @"yes"];
+                NSNumber *baselineElement = dataArray[0];
+                NSNumber *numberOfElementsToReduce = dataArray[1];
+                NSNumber *expressionLength = [NSNumber numberWithInteger: [expression length]];
                 
-                NSNumber *baselineElement = evaluateString(tempDict[keys][4]);
-                NSNumber *superScriptElement = evaluateString(tempDict[nextKey][4]);
+                expression = [expression substringToIndex:expressionLength.unsignedIntegerValue - numberOfElementsToReduce.unsignedIntegerValue +1 ];
+                
+                
+                //                NSNumber *superScriptElement = evaluateString(tempDict[nextKey][4]);
                 expression = [expression stringByAppendingString: ([NSNumber numberWithDouble: pow(baselineElement.doubleValue, superScriptElement.doubleValue)]).stringValue];
                 [skipList2 addObject:nextKey];
             }
@@ -443,5 +451,66 @@
     }
     return expression;
 }
+
+
+/* ------------------------------------------------------------------------------------------------------
+ PART - F
+ //# MARK: Element Grouping Support Team
+ */
+
+
+-(NSNumber*)commonCold:(NSMutableDictionary*)data mutate_Index:(NSString*)mutateIndex skip_List_Enable:(NSString*)skipListEnable{
+    
+    NSMutableArray *indexList = [NSMutableArray arrayWithObjects: mutateIndex , nil];
+    NSString *currentIndex = mutateIndex;
+    NSNumber *thresholdValue = [NSNumber numberWithDouble:0.5];
+    
+    while(1){
+        NSString *next_index = nextElement(data, currentIndex);
+        if ([next_index isEqualToString: @"nil"]){
+            break;
+        }
+        NSNumber *discValue = [self hypothesisEvaluator:data[next_index] second_Element: data[currentIndex]];
+        if (discValue.doubleValue >= thresholdValue.doubleValue){
+            break;
+        }
+        [indexList addObject:next_index];
+        currentIndex = next_index;
+    }
+    
+    NSString *stringExpression = [self stringGenerator:indexList inputData:data];
+    NSNumber *stringEval = evaluateString(stringExpression);
+    if ([skipListEnable isEqualToString:@"yes"]){
+        [self.skipList addObjectsFromArray: indexList];
+    }
+    return stringEval;
+}
+
+-(NSArray*)groundSneeze:(NSMutableDictionary*)data sneeze_Index:(NSString*)sneezeIndex skip_List_Enable:(NSString*)skipListEnable{
+    
+    NSMutableArray *indexList = [NSMutableArray arrayWithObjects: sneezeIndex , nil];
+    NSString *currentIndex = sneezeIndex;
+    
+    while(1){
+        NSString *previous_index = previousElement(data, currentIndex);
+        if (([data[previous_index][5] isEqualToString: self.symName[0]]) || ([data[previous_index][4] isEqualToString: @"."] )){
+            [indexList addObject:previous_index];
+            currentIndex = previous_index;
+        } else{
+            break;
+        }
+    }
+    indexList = sortArray(indexList);
+    NSString *stringExpression = [self stringGenerator:indexList inputData:data];
+    NSNumber *stringEval = evaluateString(stringExpression);
+    
+    if ([skipListEnable isEqualToString:@"yes"]){
+        [self.skipList addObjectsFromArray: indexList];
+    }
+    
+    return @[stringEval, [NSNumber numberWithInteger: indexList.count]];
+}
+
+
 
 @end

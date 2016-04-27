@@ -18,7 +18,7 @@
 @property NSMutableDictionary *rawData;
 @property NSNumber *processedDataRunKey;
 @property NSNumber *numberOfElements;
-    
+
 -(id)initWithRawData:(NSMutableDictionary *)inputData;
 -(NSMutableDictionary*)processedData;
 -(NSNumber*)evaluate;
@@ -27,6 +27,8 @@
 -(NSString*)stringGenerator:(NSMutableArray*)keyRange inputData:(NSMutableDictionary*)data;
 -(NSString*)classificationDecisionTree:(NSMutableDictionary*)tempDict current_Key:(NSString*)currentKey next_Key:(NSString*)nextKey;
 -(NSNumber*)hypothesisEvaluator:(NSMutableArray*)firstElement second_Element:(NSMutableArray*)secondElement;
+-(NSNumber*)commonCold:(NSMutableDictionary*)data mutate_Index:(NSString*)mutateIndex skip_List_Enable:(NSString*)skipListEnable;
+-(NSArray*)groundSneeze:(NSMutableDictionary*)data sneeze_Index:(NSString*)sneezeIndex skip_List_Enable:(NSString*)skipListEnable;
 
 
 @end

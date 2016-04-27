@@ -20,3 +20,4 @@ NSNumber *maxStringArray(NSMutableArray *dataArray);
 NSMutableArray *underRootSearch(NSMutableDictionary *dataDictionary, NSString *rootKey);
 NSMutableArray *longDivision(NSMutableDictionary *dataDictionary, NSString *divisionKey);
 NSString *nextElement(NSMutableDictionary *dataDictionary, NSString *currentKey);
+NSString *previousElement(NSMutableDictionary *dataDictionary, NSString *currentKey);

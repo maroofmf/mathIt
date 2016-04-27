@@ -11,18 +11,18 @@
 
 
 /* ------------------------------------------------------------------------------------------------------
-                                            Function -- 1
-//# MARK: Evaluate Numerical Expressions.
-//# FIXME: Wont return precise values for 2/3. Returns 0 instead of 0.66
-
-Testing:
+ Function -- 1
+ //# MARK: Evaluate Numerical Expressions.
+ //# FIXME: Wont return precise values for 2/3. Returns 0 instead of 0.66
  
-#Input:
+ Testing:
+ 
+ #Input:
  NSString *testVariable = @"3.02/4.9";
  NSNumber *testOutput = evaluateString(testVariable);
  NSLog(@"%@", testOutput);
  
-#Output:
+ #Output:
  0.61632
  
  */
@@ -36,9 +36,9 @@ NSNumber *evaluateString(NSString *numericExpression){
 
 
 /* ------------------------------------------------------------------------------------------------------
-                                            Function -- 2
-# MARK: Sorting Based on index Values in Ascending Order.
-
+ Function -- 2
+ # MARK: Sorting Based on index Values in Ascending Order.
+ 
  Testing:
  
  #Input:
@@ -48,10 +48,10 @@ NSNumber *evaluateString(NSString *numericExpression){
  @"5": [NSMutableArray arrayWithObjects:@1,@3,@9, nil],
  @"3": [NSMutableArray arrayWithObjects:@3,@5,@3, nil]
  };
-NSMutableArray *testOutput = dictionarySortAscending(testVariable, 2);
-NSLog(@"%@", testOutput);
+ NSMutableArray *testOutput = dictionarySortAscending(testVariable, 2);
+ NSLog(@"%@", testOutput);
  
- #Output : 
+ #Output :
  [2,3,1,5]
  */
 
@@ -77,7 +77,7 @@ NSMutableArray *dictionarySortAscending(NSMutableDictionary *dataDictionary, int
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                             Function -- 3
+ Function -- 3
  # MARK: Calculating X-Centroid
  
  Testing:
@@ -100,7 +100,7 @@ NSNumber *xcent(NSMutableArray *dataArray){
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                             Function -- 4
+ Function -- 4
  # MARK: Calculating Y-Centroid
  
  Testing:
@@ -123,7 +123,7 @@ NSNumber *ycent(NSMutableArray *dataArray){
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                             Function -- 5
+ Function -- 5
  # MARK: Return sorted keys of a dictionary
  
  Testing:
@@ -154,12 +154,12 @@ NSMutableArray *sortedKeys(NSMutableDictionary *dataDictionary){
             return NSOrderedSame;
         }
     }];
-
+    
     return sortedKey;
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                                Function -- 6
+ Function -- 6
  # MARK: Pass a dictionary and the key value to find the minimum value of dictionary-value
  
  Testing:
@@ -178,7 +178,7 @@ NSMutableArray *sortedKeys(NSMutableDictionary *dataDictionary){
  */
 
 NSNumber *minFinder(NSMutableDictionary *dataDictionary, int index){
-
+    
     NSMutableArray *valueArray = [NSMutableArray arrayWithObjects: nil];
     
     for (id key in dataDictionary){
@@ -191,7 +191,7 @@ NSNumber *minFinder(NSMutableDictionary *dataDictionary, int index){
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                                Function -- 7
+ Function -- 7
  # MARK: Pass a dictionary and the key value to find the maximum value of dictionary-value
  
  Testing:
@@ -223,8 +223,8 @@ NSNumber *maxFinder(NSMutableDictionary *dataDictionary, int index){
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                                Function -- 8
-//# MARK: Sort Array Elements
+ Function -- 8
+ //# MARK: Sort Array Elements
  
  Testing:
  
@@ -254,7 +254,7 @@ NSMutableArray *sortArray(NSMutableArray *dataArray){
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                                Function -- 9
+ Function -- 9
  //# MARK: Find maximum value in an array
  
  Testing:
@@ -276,7 +276,7 @@ NSNumber *maxStringArray(NSMutableArray *dataArray){
 }
 
 /* ------------------------------------------------------------------------------------------------------
-                                                Function -- 10
+ Function -- 10
  //# MARK: Find the elements lying under the root symbol and return the keys in sorted order
  //# TODO: Test for rootSearch based on centroid values.
  Testing:
@@ -287,11 +287,11 @@ NSNumber *maxStringArray(NSMutableArray *dataArray){
  NSMutableDictionary *testVariable = @{@"0": @[@220, @340, @110, @135, @"/", @"longDivision"], @"9": @[@305, @315, @77, @86, @"2", @"N"], @"2": @[@243, @253, @77, @86, @"3", @"N"], @"8": @[@285, @300, @85, @100, @"2", @"N"], @"6": @[@292, @310, @120, @130, @"5", @"N"], @"3": @[@254, @265, @120, @130, @"5", @"N"], @"1": @[@225, @240, @85, @103, @"3", @"N"], @"5": @[@278, @290, @121, @131, @"0", @"N"], @"4": @[@270, @275, @127, @131, @".", @"O"], @"7": @[@268, @275, @95, @100, @"-", @"O"]};
  NSMutableArray *testOutput = underRootSearch(testVariable,@"0");
  NSLog(@"%@",testOutput);
-
+ 
  
  #Output:
  3,4,5,6
-
+ 
  */
 
 NSMutableArray *underRootSearch(NSMutableDictionary *dataDictionary, NSString *rootKey){
@@ -319,10 +319,10 @@ NSMutableArray *underRootSearch(NSMutableDictionary *dataDictionary, NSString *r
 
 
 /* ------------------------------------------------------------------------------------------------------
-                                            Function -- 11
-//# MARK: Finding Elements in long Division
-//# TODO: Test for rootSearch based on centroid values.
-
+ Function -- 11
+ //# MARK: Finding Elements in long Division
+ //# TODO: Test for rootSearch based on centroid values.
+ 
  Testing:
  
  #Input:
@@ -364,11 +364,11 @@ NSMutableArray *longDivision(NSMutableDictionary *dataDictionary, NSString *divi
     bottomArray = sortArray(bottomArray);
     NSMutableArray *returnArray = @[topArray, bottomArray];
     return returnArray;
-    }
-    
+}
+
 /* ------------------------------------------------------------------------------------------------------
-                                                Function -- 12
-//# MARK: Find Next element in dictionary
+ Function -- 12
+ //# MARK: Find Next element in dictionary
  
  Testing:
  
@@ -394,11 +394,39 @@ NSString *nextElement(NSMutableDictionary *dataDictionary, NSString *currentKey)
     else {
         return [dictKeys objectAtIndex:nextKeyIndex];
     }
-    }
+}
 
 /* ------------------------------------------------------------------------------------------------------
+ Function -- 12
+ //# MARK: Find Previous element in dictionary
+ 
+ Testing:
+ 
+ #Input:
+ NSMutableDictionary *testVariable = @{@"0": @[@220, @340, @110, @115, @"/", @"longDivision"], @"9": @[@305, @315, @77, @86, @"2", @"N"], @"2": @[@243, @253, @77, @86, @"3", @"N"], @"6": @[@292, @310, @120, @130, @"5", @"N"], @"3": @[@254, @265, @120, @130, @"5", @"N"], @"1": @[@225, @240, @85, @103, @"3", @"N"], @"5": @[@278, @290, @121, @131, @"0", @"N"], @"4": @[@270, @275, @127, @131, @".", @"O"], @"7": @[@268, @275, @95, @100, @"-", @"O"]};
+ 
+ 
+ NSString *testOutput = nextElement(testVariable, @"7");
+ NSLog(@"%@",testOutput);
+ 
+ #Output:
+ 9
  */
 
+NSString *previousElement(NSMutableDictionary *dataDictionary, NSString *currentKey){
+    NSMutableArray *dictKeys = sortArray(dataDictionary.allKeys);
+    int currentKeyIndex = [dictKeys indexOfObject:currentKey];
+    int nextKeyIndex = currentKeyIndex - 1;
+    
+    if (nextKeyIndex < 0) {
+        return @"nil";
+    }
+    else {
+        return [dictKeys objectAtIndex:nextKeyIndex];
+    }
+}
+
+/* ------------------------------------------------------------------------------------------------------*/
 
 
 
