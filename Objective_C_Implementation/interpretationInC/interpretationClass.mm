@@ -44,7 +44,10 @@
 -(NSMutableDictionary*)processedData{
     NSMutableDictionary *dataDictionary = [[NSMutableDictionary alloc] init];
     NSMutableArray *rawDataSortedKeys = dictionarySortAscending(self.rawData,0);
+    
     if (self.processedDataRunKey == [NSNumber numberWithInt:1]){
+        
+        // Preparing Dictionary in Order
         NSNumber *index = [NSNumber numberWithInt:0];
         for (id keys in rawDataSortedKeys){
             NSMutableArray *keyValue = [NSMutableArray arrayWithObjects: nil];
@@ -64,6 +67,51 @@
             [dataDictionary setObject:keyValue forKey:index.stringValue];
             index = [NSNumber numberWithInt:index.integerValue + 1];
         }
+        
+        
+        //        // Classification of Division, Negative Sign and
+        //        NSNumber *thresholdMultiplier = [NSNumber numberWithDouble:1.25];
+        //
+        //        for (id keys in dataDictionary){
+        //            if ([dataDictionary[keys][4] isEqualToString:@"-"]){
+        //                NSMutableArray *elementsInVerticalRange = longDivision(dataDictionary, keys);
+        //                NSMutableArray *topElements = elementsInVerticalRange[0];
+        //                NSMutableArray *bottomElements = elementsInVerticalRange[1];
+        //                NSMutableArray *elementsToInspect = [NSMutableArray arrayWithObjects: nil];
+        //                [elementsToInspect addObjectsFromArray:topElements];
+        //                [elementsToInspect addObjectsFromArray:bottomElements];
+        //
+        //                NSNumber *horizontalLength = [NSNumber numberWithDouble: [dataDictionary[keys][6] doubleValue] - [dataDictionary[keys][7] doubleValue]];
+        //                NSNumber *threshold = [NSNumber numberWithDouble:horizontalLength.doubleValue * thresholdMultiplier.doubleValue];
+        //
+        //                int numberOfDots = 0;
+        //                int numberOfElements = 0;
+        //                NSMutableArray *dotList = [NSMutableArray arrayWithObjects: nil];
+        //
+        //                for (id elements in elementsToInspect){
+        //                    NSNumber *l2Score = l2Norm(dataDictionary, keys, elements);
+        //                    if (l2Score.doubleValue <= threshold.doubleValue){
+        //                        numberOfElements++;
+        //                        if ([dataDictionary[elements][4] isEqualToString: @"."]){
+        //                            numberOfDots++;
+        //                            [dotList addObject:elements];
+        //                        }
+        //                    }
+        //                }
+        //
+        //                if ((numberOfElements == 2) && (numberOfDots == 2)){
+        //
+        //                }
+        //
+        //
+        //
+        //
+        //
+        //            }
+        //
+        //        }
+        
+        
     }
     self.processedDataRunKey = [NSNumber numberWithInt:0];
     NSLog(@"%@",dataDictionary);
@@ -188,7 +236,7 @@
                 }
                 else if ([data[nextElementKey][5] isEqualToString: self.symName[0]]){
                     NSNumber *primaryEvaluate = evaluateString([self stringGenerator:keyRange inputData:data]);
-                    NSNumber *powerTerm = [self commonCold:data mutate_Index:nextElementKey skip_List_Enable: @"no"];
+                    NSNumber *powerTerm = [self commonCold:data mutate_Index:nextElementKey skip_List_Enable: @"yes"];
                     keyRangeString  = ([NSNumber numberWithDouble:pow(primaryEvaluate.doubleValue, powerTerm.doubleValue)]).stringValue;
                 }
                 else{

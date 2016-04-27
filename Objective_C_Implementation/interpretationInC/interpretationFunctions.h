@@ -21,3 +21,4 @@ NSMutableArray *underRootSearch(NSMutableDictionary *dataDictionary, NSString *r
 NSMutableArray *longDivision(NSMutableDictionary *dataDictionary, NSString *divisionKey);
 NSString *nextElement(NSMutableDictionary *dataDictionary, NSString *currentKey);
 NSString *previousElement(NSMutableDictionary *dataDictionary, NSString *currentKey);
+NSNumber *l2Norm(NSMutableDictionary *dataDictionary, NSString *firstKey, NSString *secondKey);

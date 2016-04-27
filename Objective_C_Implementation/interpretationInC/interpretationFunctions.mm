@@ -403,14 +403,7 @@ NSString *nextElement(NSMutableDictionary *dataDictionary, NSString *currentKey)
  Testing:
  
  #Input:
- NSMutableDictionary *testVariable = @{@"0": @[@220, @340, @110, @115, @"/", @"longDivision"], @"9": @[@305, @315, @77, @86, @"2", @"N"], @"2": @[@243, @253, @77, @86, @"3", @"N"], @"6": @[@292, @310, @120, @130, @"5", @"N"], @"3": @[@254, @265, @120, @130, @"5", @"N"], @"1": @[@225, @240, @85, @103, @"3", @"N"], @"5": @[@278, @290, @121, @131, @"0", @"N"], @"4": @[@270, @275, @127, @131, @".", @"O"], @"7": @[@268, @275, @95, @100, @"-", @"O"]};
  
- 
- NSString *testOutput = nextElement(testVariable, @"7");
- NSLog(@"%@",testOutput);
- 
- #Output:
- 9
  */
 
 NSString *previousElement(NSMutableDictionary *dataDictionary, NSString *currentKey){
@@ -426,8 +419,29 @@ NSString *previousElement(NSMutableDictionary *dataDictionary, NSString *current
     }
 }
 
-/* ------------------------------------------------------------------------------------------------------*/
+/* ------------------------------------------------------------------------------------------------------
+ Function -- 13
+ //# MARK: L2-Norm
+ 
+ Testing:
+ 
+ #Input:
+ 
+ */
 
+NSNumber *l2Norm(NSMutableDictionary *dataDictionary, NSString *firstKey, NSString *secondKey){
+    
+    NSNumber *first_x = dataDictionary[firstKey][6];
+    NSNumber *first_y = dataDictionary[firstKey][7];
+    NSNumber *second_x = dataDictionary[secondKey][6];
+    NSNumber *second_y = dataDictionary[secondKey][7];
+    
+    NSNumber *l2 = [NSNumber numberWithDouble: pow(pow(first_x.doubleValue -second_x.doubleValue , 2) + pow(first_y.doubleValue - second_y.doubleValue , 2) ,0.5)];
+    
+    return l2;
+}
+
+/* ------------------------------------------------------------------------------------------------------*/
 
 
 
