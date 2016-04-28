@@ -78,15 +78,10 @@
                 if ((numberOfElements == 2) && (numberOfDots == 2)){
                     NSMutableArray *keyArray = [NSMutableArray arrayWithObjects: nil];
                     [keyArray addObjectsFromArray: [self.rawData objectForKey:keys]];
-                    NSLog(@"key:::: %@", keyArray);
-                    [keyArray replaceObjectAtIndex:4 withObject:@"/"];
-                    NSLog(@"Passaa1");
+                    [keyArray replaceObjectAtIndex:4 withObject:@"/(1.0)/"];
                     [self.rawData removeObjectForKey: dotList[0]];
-                    NSLog(@"Passaa1");
                     [self.rawData removeObjectForKey: dotList[1]];
-                    NSLog(@"Passaa1");
                     self.rawData[keys] = keyArray;
-                    NSLog(@"Passaa1");
                 } else if((numberOfElements > 2) || ((numberOfElements == 2) && (numberOfDots < 2))) {
                     NSMutableArray *keyArray = [NSMutableArray arrayWithObjects: nil];
                     [keyArray addObjectsFromArray: [self.rawData objectForKey:keys]];
@@ -125,7 +120,7 @@
         
         
     }
-    self.processedDataRunKey = [NSNumber numberWithInt:0];
+    self.processedDataRunKey = [NSNumber numberWithInt:1];
     NSLog(@"preprocess 2: %@",dataDictionary);
     return dataDictionary;
 }
@@ -311,7 +306,7 @@
         if (firstElementCheck == 1){
             NSMutableArray *keyValue = [NSMutableArray arrayWithObjects: nil];
             [keyValue addObjectsFromArray:tempDict[keys]];
-            [keyValue addObject:@"baseline"];
+            [keyValue insertObject:@"baseline" atIndex:9];
             [tempDict setObject:keyValue forKey: keys];
             firstElementCheck = 0;
             
@@ -320,7 +315,7 @@
             }else{
                 NSMutableArray *keyValue = [NSMutableArray arrayWithObjects: nil];
                 [keyValue addObjectsFromArray:tempDict[nextKey]];
-                [keyValue addObject:[self classificationDecisionTree:tempDict current_Key:keys next_Key:nextKey]];
+                [keyValue insertObject:[self classificationDecisionTree:tempDict current_Key:keys next_Key:nextKey] atIndex:9];
                 [tempDict setObject:keyValue forKey:nextKey];
             }
         }
@@ -331,7 +326,7 @@
             else{
                 NSMutableArray *keyValue = [NSMutableArray arrayWithObjects: nil];
                 [keyValue addObjectsFromArray:tempDict[nextKey]];
-                [keyValue addObject:[self classificationDecisionTree:tempDict current_Key:keys next_Key:nextKey]];
+                [keyValue insertObject:[self classificationDecisionTree:tempDict current_Key:keys next_Key:nextKey] atIndex:9];
                 [tempDict setObject:keyValue forKey:nextKey];
             }
         }
@@ -544,8 +539,9 @@
         [indexList addObject:next_index];
         currentIndex = next_index;
     }
-    
-    NSString *stringExpression = [self stringGenerator:indexList inputData:data];
+    NSMutableDictionary *localDataDictionary = [[NSMutableDictionary alloc] init];
+    localDataDictionary = [ self processedData];
+    NSString *stringExpression = [self stringGenerator:indexList inputData:localDataDictionary];
     NSLog(@"This is where%@" , stringExpression);
     NSNumber *stringEval = evaluateString(stringExpression);
     if ([skipListEnable isEqualToString:@"yes"]){
@@ -569,7 +565,9 @@
         }
     }
     indexList = sortArray(indexList);
-    NSString *stringExpression = [self stringGenerator:indexList inputData:data];
+    NSMutableDictionary *localDataDictionary = [[NSMutableDictionary alloc] init];
+    localDataDictionary = [ self processedData];
+    NSString *stringExpression = [self stringGenerator:indexList inputData:localDataDictionary];
     NSNumber *stringEval = evaluateString(stringExpression);
     
     if ([skipListEnable isEqualToString:@"yes"]){
