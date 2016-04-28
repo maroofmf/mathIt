@@ -350,12 +350,13 @@ NSMutableArray *longDivision(NSMutableDictionary *dataDictionary, NSString *divi
     
     for (id key in dataDictionary) {
         NSMutableArray *dataValue = [dataDictionary objectForKey:key];
-        NSNumber *xCentVal = [dataValue objectAtIndex:6];
-        NSNumber *yCentVal = [dataValue objectAtIndex:7];
+        NSNumber *xCentVal = xcent(dataDictionary[key]);
+        NSNumber *yCentVal = ycent(dataDictionary[key]);
+        
         if ((xCentVal.doubleValue > x0_threshold.doubleValue) && (xCentVal.doubleValue < x1_threshold.doubleValue)){
-            if ((yCentVal.doubleValue < y0_threshold.doubleValue) && ([key isEqualToString: divisionKey])){
+            if ((yCentVal.doubleValue < y0_threshold.doubleValue) && (![key isEqualToString: divisionKey])){
                 [topArray addObject:key];
-            } else if ((yCentVal.doubleValue > y1_threshold.doubleValue) && ([key isEqualToString: divisionKey])) {
+            } else if ((yCentVal.doubleValue > y1_threshold.doubleValue) && (![key isEqualToString: divisionKey])) {
                 [bottomArray addObject:key];
             }
         }
@@ -431,10 +432,10 @@ NSString *previousElement(NSMutableDictionary *dataDictionary, NSString *current
 
 NSNumber *l2Norm(NSMutableDictionary *dataDictionary, NSString *firstKey, NSString *secondKey){
     
-    NSNumber *first_x = dataDictionary[firstKey][6];
-    NSNumber *first_y = dataDictionary[firstKey][7];
-    NSNumber *second_x = dataDictionary[secondKey][6];
-    NSNumber *second_y = dataDictionary[secondKey][7];
+    NSNumber *first_x = xcent(dataDictionary[firstKey]);
+    NSNumber *first_y = ycent(dataDictionary[firstKey]);
+    NSNumber *second_x = xcent(dataDictionary[secondKey]);
+    NSNumber *second_y = ycent(dataDictionary[secondKey]);
     
     NSNumber *l2 = [NSNumber numberWithDouble: pow(pow(first_x.doubleValue -second_x.doubleValue , 2) + pow(first_y.doubleValue - second_y.doubleValue , 2) ,0.5)];
     

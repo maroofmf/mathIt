@@ -47,8 +47,63 @@
     
     if (self.processedDataRunKey == [NSNumber numberWithInt:1]){
         
+        
+        // Classification of Division, Negative Sign and
+        NSNumber *thresholdMultiplier = [NSNumber numberWithDouble:1.25];
+        for (id keys in rawDataSortedKeys){
+            if ([self.rawData[keys][4] isEqualToString:@"-"]){
+                NSMutableArray *elementsInVerticalRange = longDivision(self.rawData, keys);
+                NSMutableArray *topElements = elementsInVerticalRange[0];
+                NSMutableArray *bottomElements = elementsInVerticalRange[1];
+                NSMutableArray *elementsToInspect = [NSMutableArray arrayWithObjects: nil];
+                [elementsToInspect addObjectsFromArray:topElements];
+                [elementsToInspect addObjectsFromArray:bottomElements];
+                NSNumber *horizontalLength = [NSNumber numberWithDouble: fabs([self.rawData[keys][1] doubleValue] - [self.rawData[keys][0] doubleValue])];
+                NSNumber *threshold = [NSNumber numberWithDouble:horizontalLength.doubleValue * thresholdMultiplier.doubleValue];
+                int numberOfDots = 0;
+                int numberOfElements = 0;
+                NSMutableArray *dotList = [NSMutableArray arrayWithObjects: nil];
+                
+                for (id elements in elementsToInspect){
+                    NSNumber *l2Score = l2Norm(self.rawData, keys, elements);
+                    if (l2Score.doubleValue <= threshold.doubleValue){
+                        numberOfElements++;
+                        if ([self.rawData[elements][4] isEqualToString: @"."]){
+                            numberOfDots++;
+                            [dotList addObject:elements];
+                        }
+                    }
+                }
+                
+                if ((numberOfElements == 2) && (numberOfDots == 2)){
+                    NSMutableArray *keyArray = [NSMutableArray arrayWithObjects: nil];
+                    [keyArray addObjectsFromArray: [self.rawData objectForKey:keys]];
+                    NSLog(@"key:::: %@", keyArray);
+                    [keyArray replaceObjectAtIndex:4 withObject:@"/"];
+                    NSLog(@"Passaa1");
+                    [self.rawData removeObjectForKey: dotList[0]];
+                    NSLog(@"Passaa1");
+                    [self.rawData removeObjectForKey: dotList[1]];
+                    NSLog(@"Passaa1");
+                    self.rawData[keys] = keyArray;
+                    NSLog(@"Passaa1");
+                } else if((numberOfElements > 2) || ((numberOfElements == 2) && (numberOfDots < 2))) {
+                    NSMutableArray *keyArray = [NSMutableArray arrayWithObjects: nil];
+                    [keyArray addObjectsFromArray: [self.rawData objectForKey:keys]];
+                    [keyArray replaceObjectAtIndex:4 withObject: @"longDivision"];
+                    [keyArray replaceObjectAtIndex:5 withObject: @"longDivision"];
+                    self.rawData[keys] = keyArray;
+                    
+                }
+            }
+        }
+        
+        NSLog(@"preprocess 1: %@",self.rawData);
         // Preparing Dictionary in Order
+        NSMutableArray *rawDataSortedKeys = dictionarySortAscending(self.rawData,0);
         NSNumber *index = [NSNumber numberWithInt:0];
+        NSNumber *numberOfElements = [NSNumber numberWithUnsignedInteger: self.rawData.count];
+        
         for (id keys in rawDataSortedKeys){
             NSMutableArray *keyValue = [NSMutableArray arrayWithObjects: nil];
             [keyValue addObjectsFromArray : [self.rawData objectForKey:keys]];
@@ -57,7 +112,7 @@
             if ([self.breakList containsObject:keyValue[5]]){
                 [keyValue addObject: @"breakable"];
             }
-            else if ([[NSNumber numberWithInt: index.integerValue +1] isEqual:self.numberOfElements]) {
+            else if ([[NSNumber numberWithInt: index.integerValue +1] isEqual: numberOfElements]) {
                 
                 [keyValue addObject: @"breakable"];
             }
@@ -69,52 +124,9 @@
         }
         
         
-        //        // Classification of Division, Negative Sign and
-        //        NSNumber *thresholdMultiplier = [NSNumber numberWithDouble:1.25];
-        //
-        //        for (id keys in dataDictionary){
-        //            if ([dataDictionary[keys][4] isEqualToString:@"-"]){
-        //                NSMutableArray *elementsInVerticalRange = longDivision(dataDictionary, keys);
-        //                NSMutableArray *topElements = elementsInVerticalRange[0];
-        //                NSMutableArray *bottomElements = elementsInVerticalRange[1];
-        //                NSMutableArray *elementsToInspect = [NSMutableArray arrayWithObjects: nil];
-        //                [elementsToInspect addObjectsFromArray:topElements];
-        //                [elementsToInspect addObjectsFromArray:bottomElements];
-        //
-        //                NSNumber *horizontalLength = [NSNumber numberWithDouble: [dataDictionary[keys][6] doubleValue] - [dataDictionary[keys][7] doubleValue]];
-        //                NSNumber *threshold = [NSNumber numberWithDouble:horizontalLength.doubleValue * thresholdMultiplier.doubleValue];
-        //
-        //                int numberOfDots = 0;
-        //                int numberOfElements = 0;
-        //                NSMutableArray *dotList = [NSMutableArray arrayWithObjects: nil];
-        //
-        //                for (id elements in elementsToInspect){
-        //                    NSNumber *l2Score = l2Norm(dataDictionary, keys, elements);
-        //                    if (l2Score.doubleValue <= threshold.doubleValue){
-        //                        numberOfElements++;
-        //                        if ([dataDictionary[elements][4] isEqualToString: @"."]){
-        //                            numberOfDots++;
-        //                            [dotList addObject:elements];
-        //                        }
-        //                    }
-        //                }
-        //
-        //                if ((numberOfElements == 2) && (numberOfDots == 2)){
-        //
-        //                }
-        //
-        //
-        //
-        //
-        //
-        //            }
-        //
-        //        }
-        
-        
     }
     self.processedDataRunKey = [NSNumber numberWithInt:0];
-    NSLog(@"%@",dataDictionary);
+    NSLog(@"preprocess 2: %@",dataDictionary);
     return dataDictionary;
 }
 
@@ -207,7 +219,7 @@
             NSString *topString = [self stringGenerator:ldIndices inputData:data];
             NSMutableArray *bottomIndices = (longDivision(data, keys))[1];
             NSString *bottomString = [self stringGenerator:bottomIndices inputData:data];
-            NSMutableArray *elementsArray = [NSMutableArray arrayWithObjects:@"(",topString, @")",@"/",@"(", bottomString, @")", nil];
+            NSMutableArray *elementsArray = [NSMutableArray arrayWithObjects:@"((",topString, @")*(1.0))",@"/",@"((1.0)*(", bottomString, @"))", nil];
             processOutput = [elementsArray componentsJoinedByString:@""];
             [self.skipList addObjectsFromArray:ldIndices];
             [self.skipList addObjectsFromArray:bottomIndices];
@@ -480,9 +492,6 @@
                 NSNumber *expressionLength = [NSNumber numberWithInteger: [expression length]];
                 
                 expression = [expression substringToIndex:expressionLength.unsignedIntegerValue - numberOfElementsToReduce.unsignedIntegerValue +1 ];
-                
-                
-                //                NSNumber *superScriptElement = evaluateString(tempDict[nextKey][4]);
                 expression = [expression stringByAppendingString: ([NSNumber numberWithDouble: pow(baselineElement.doubleValue, superScriptElement.doubleValue)]).stringValue];
                 [skipList2 addObject:nextKey];
             }
