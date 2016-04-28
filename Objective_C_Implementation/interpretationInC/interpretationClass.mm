@@ -131,6 +131,14 @@
  //# MARK: Evaluation and Routing
  */
 
+-(NSNumber*)masterEvaluator:(NSMutableDictionary*)dataDictionary{
+    
+    interpretationClass *testOuptut = [[interpretationClass alloc] initWithRawData:dataDictionary];
+    double result1 = testOuptut.evaluate.doubleValue;
+    NSNumber *result = [NSNumber numberWithDouble: result1];
+    return result;
+}
+
 
 -(NSNumber*)evaluate{
     NSNumber *index = [NSNumber numberWithInt:0];
@@ -477,11 +485,18 @@
     
     tempDict = [self classificationEngine:tempDict];
     NSLog(@"For temp-> %@", tempDict);
+    
     for (id keys in keyRange){
         
         if ([skipList2 containsObject:keys] || ([self.skipList containsObject:keys])){
             currentIndex = [NSNumber numberWithInt: currentIndex.intValue + 1];
             continue;
+        }
+        
+        if ([tempDict[keys][8] isEqualToString: @"breakable"] && ![tempDict[keys][5] isEqualToString: self.symName[0]]){
+            NSNumber *breakableEvaluate = [self masterEvaluator:tempDict];
+            expression = breakableEvaluate.stringValue;
+            return expression;
         }
         
         if ([data[keys][5] isEqualToString: self.symName[0]]){

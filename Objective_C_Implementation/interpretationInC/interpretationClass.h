@@ -29,6 +29,6 @@
 -(NSNumber*)hypothesisEvaluator:(NSMutableArray*)firstElement second_Element:(NSMutableArray*)secondElement;
 -(NSNumber*)commonCold:(NSMutableDictionary*)data mutate_Index:(NSString*)mutateIndex skip_List_Enable:(NSString*)skipListEnable;
 -(NSArray*)groundSneeze:(NSMutableDictionary*)data sneeze_Index:(NSString*)sneezeIndex skip_List_Enable:(NSString*)skipListEnable;
-
+-(NSNumber*)masterEvaluator:(NSMutableDictionary*)dataDictionary;
 
 @end
