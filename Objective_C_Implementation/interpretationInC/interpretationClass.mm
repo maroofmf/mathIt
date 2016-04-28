@@ -346,7 +346,7 @@
     NSNumber *hypothesisValue = [NSNumber numberWithDouble:0];
     NSNumber *thresholdValue = [NSNumber numberWithDouble:0.5];
     
-    // Encoding the cases to use in switch statement.
+    // Encoding the cases to use in switch statement. case 1: number case 2: "." case3: operator
     if ([tempDict[nextKey][5] isEqualToString: self.symName[0]]){
         caseID = 1;
     } else{
@@ -360,10 +360,17 @@
     
     switch (caseID) {
             
-        case 3:
+        case 3:{
             
             if ([tempDict[currentKey][9] isEqualToString:@"baseline"]){
-                return @"baseline";
+                //                return @"baseline";
+                NSString *next_nextKey = nextElement(tempDict, nextKey);
+                hypothesisValue = [self hypothesisEvaluator:tempDict[currentKey] second_Element: tempDict[next_nextKey]];
+                if (hypothesisValue.doubleValue <= thresholdValue.doubleValue){
+                    return @"baseline";
+                }else{
+                    return @"superscript";
+                }
             }
             
             else{
@@ -377,12 +384,14 @@
                 }
             }
             break;
+        }
             
-        case 2:
+        case 2:{
             return tempDict[currentKey][9];
             break;
+        }
             
-        case 1:
+        case 1:{
             if ([tempDict[currentKey][5] isEqualToString:self.symName[1]]){
                 return tempDict[currentKey][9];
             }
@@ -394,11 +403,12 @@
                     return @"superscript";
                 }
             }
-            
-        default:
+        }
+        default:{
             NSLog(@"Default Executed");
             return tempDict[currentKey][9];
             break;
+        }
     }
 }
 
@@ -485,8 +495,8 @@
                 expression = [expression stringByAppendingString: tempDict[keys][4]];
             }
             else if ([tempDict[nextKey][9] isEqualToString: @"superscript"]) {
-                NSNumber *superScriptElement = [self commonCold:data mutate_Index:nextKey skip_List_Enable: @"yes"];
-                NSArray *dataArray = [self groundSneeze:data sneeze_Index:keys skip_List_Enable: @"yes"];
+                NSNumber *superScriptElement = [self commonCold:tempDict mutate_Index:nextKey skip_List_Enable: @"yes"];
+                NSArray *dataArray = [self groundSneeze:tempDict sneeze_Index:keys skip_List_Enable: @"yes"];
                 NSNumber *baselineElement = dataArray[0];
                 NSNumber *numberOfElementsToReduce = dataArray[1];
                 NSNumber *expressionLength = [NSNumber numberWithInteger: [expression length]];
@@ -536,6 +546,7 @@
     }
     
     NSString *stringExpression = [self stringGenerator:indexList inputData:data];
+    NSLog(@"This is where%@" , stringExpression);
     NSNumber *stringEval = evaluateString(stringExpression);
     if ([skipListEnable isEqualToString:@"yes"]){
         [self.skipList addObjectsFromArray: indexList];

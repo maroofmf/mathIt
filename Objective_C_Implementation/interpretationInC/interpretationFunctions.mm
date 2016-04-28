@@ -28,6 +28,7 @@
  */
 
 NSNumber *evaluateString(NSString *numericExpression){
+    numericExpression = [@"0" stringByAppendingString: numericExpression];
     NSExpression *expression = [NSExpression expressionWithFormat:numericExpression];
     NSNumber *result = [expression expressionValueWithObject:nil context:nil];
     return result;
